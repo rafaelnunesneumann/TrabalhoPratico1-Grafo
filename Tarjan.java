@@ -86,7 +86,6 @@ class Tarjan {
     }
 
     public static void main(String[] args) {
-        // Exemplo de uso
         List<Edge> edges = gerarGrafoCompleto(2500);
 
         long inicio = System.currentTimeMillis();

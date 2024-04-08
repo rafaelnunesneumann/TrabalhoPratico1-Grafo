@@ -1,21 +1,30 @@
-from networkx.generators.random_graphs import erdos_renyi_graph
+import networkx as nx
+import random
 
-def generate_random_graph(num_vertices, filename):
-    p = 0.0001
-    g = erdos_renyi_graph(num_vertices, p)
-    with open(filename, 'w') as file:
-        file.write(f"{num_vertices} {len(g.edges)}")
+def main():
+    # Parâmetros do grafo aleatório
+    num_vertices = 100
+    num_edges = num_vertices * 2  # Determinando o número de arestas
 
-        for idx, (u, v) in enumerate(g.edges):
-            file.write(f"\n{u} {v}")
+    # Criando um grafo aleatório com 'num_vertices' vértices e 'num_edges' arestas
+    G = nx.gnm_random_graph(num_vertices, num_edges)
 
-    print(f"Grafo com {num_vertices} vértices e {len(g.edges)} arestas foi salvo em '{filename}'.")
+    # Obtendo a lista de arestas do grafo
+    edges = list(G.edges())
 
-# Número de vértices desejado
-num_vertices = 10000
+    # Nome do arquivo para salvar o grafo
+    output_file = "grafo_aleatorio.txt"
 
-# Nome do arquivo de saída
-output_filename = "grafo_aleatorio-100000.txt"
+    # Escrevendo as informações do grafo no arquivo
+    with open(output_file, 'w') as file:
+        # Escrevendo o número de vértices e arestas no arquivo
+        file.write(f"{num_vertices} {len(edges)}\n")
 
-# Gera o grafo aleatório e salva no arquivo
-generate_random_graph(num_vertices, output_filename)
+        # Escrevendo cada aresta no arquivo
+        for edge in edges:
+            file.write(f"{edge[0]} {edge[1]}\n")
+
+    print(f"Grafo aleatório gerado e salvo em '{output_file}'.")
+
+if __name__ == "__main__":
+    main()

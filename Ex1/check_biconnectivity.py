@@ -1,63 +1,78 @@
 import networkx as nx
+import random
 import time
 
+def create_random_graph(num_vertices):
+    """ Cria um grafo aleatório com o número especificado de vértices. """
+    
+    k = 2  # Grau médio dos nós
+    p = 0.1  # Probabilidade de reorganização das arestas
+
+    G = nx.connected_watts_strogatz_graph(num_vertices, k, p)
+
+    return G
+
 def find_biconnected_components(G):
-    return list(nx.biconnected_components(G))
+    """ Encontra os blocos biconexos no grafo G. """
+    return [tuple(component) for component in nx.biconnected_components(G)]
 
-def find_disjoint_paths(G, component):
-    bridges = list(nx.bridges(G.subgraph(component)))
-    disjoint_paths = []
-    
-    for u in component:
-        for v in component:
-            if u != v:
-                try:
-                    path = nx.shortest_path(G, source=u, target=v)
-                    if all((u, v) not in bridges for u, v in zip(path, path[1:])):
-                        disjoint_paths.append(path)
-                except nx.NetworkXNoPath:
-                    continue
-    
-    return disjoint_paths
+def has_disjoint_paths(G, component):
+    """ Verifica se existem caminhos disjuntos dentro do componente biconexo. """
+    result = False
+    no_disjoint_paths = []
 
-def find_blocks(G, biconnected_components):
-    blocks = []
+    nodes = list(component)
+    n = len(nodes)
     
-    for component in biconnected_components:
-        disjoint_paths = find_disjoint_paths(G, component)
-        
-        for path in disjoint_paths:
-            # Verifica se o caminho forma um bloco
-            subgraph = G.subgraph(path)
-            if nx.is_biconnected(subgraph):  # O caminho forma um bloco
-                blocks.append(subgraph.edges())
+    # Verificar todas as combinações de pares de vértices dentro do componente
+    for i in range(n):
+        for j in range(i + 1, n):
+            disjoint_paths = nx.node_disjoint_paths(G, nodes[i], nodes[j])
+            if disjoint_paths:
+                result = True  # Existe pelo menos um par de vértices sem caminho conectando-os
+            else:
+                no_disjoint_paths.append((nodes[i], nodes[j]))
     
-    return blocks
+    return result, no_disjoint_paths
+
+def save_results_to_file(filename, biconnected_components, has_disjoint_paths, execution_time):
+    """ Salva os resultados em um arquivo especificado pelo usuário. """
+    with open(filename, 'w') as f:
+        f.write(f"Tempo total de execução: {execution_time:.6f} segundos\n\n")
+        for idx, component in enumerate(biconnected_components):
+            f.write(f"Bloco Biconexo {idx + 1}: {component}\n")
+            f.write(f"Possui caminhos disjuntos: {has_disjoint_paths[idx][0]}\n")
+            if has_disjoint_paths[idx][0]:  # Se há vértices sem caminhos disjuntos
+                f.write("Vértices sem caminhos disjuntos:\n")
+                for vertices in has_disjoint_paths[idx][1]:
+                    f.write(f"{vertices[0]} e {vertices[1]}\n")
+            f.write("\n")
 
 def main():
-    num_vertices = 1000
-    num_edges = num_vertices * 2
-
-    G = nx.gnm_random_graph(num_vertices, num_edges, directed=False)
-
+    num_vertices = 100
+    output_file = "ex1-100.out" 
+    
+    # Criar o grafo aleatório
+    G = create_random_graph(num_vertices)
+    
+    # Início da medição do tempo de execução
     start_time = time.time()
+    
+    # Encontrar os blocos biconexos
     biconnected_components = find_biconnected_components(G)
     
-    output_filename = "ex1-100.out"
-    with open(output_filename, 'w') as f:
-        f.write("Blocos Encontrados:\n")
-        blocks = find_blocks(G, biconnected_components)
-        for i, block_edges in enumerate(blocks):
-            f.write(f"Bloco {i + 1}:\n")
-            for edge in block_edges:
-                f.write(f"{edge}\n")
-            f.write("\n")
-        
-        end_time = time.time()
-        execution_time = end_time - start_time
-        f.write(f"Tempo de execucao (segundos): {execution_time}\n\n")
-
-    print(f"Resultado salvo em '{output_filename}'")
+    # Verificar se cada bloco biconexo possui caminhos disjuntos e quais vértices não têm caminhos disjuntos
+    has_disjoint_paths_list = []
+    for component in biconnected_components:
+        has_disjoint_paths_list.append(has_disjoint_paths(G, component))
+    
+    # Fim da medição do tempo de execução
+    end_time = time.time()
+    execution_time = end_time - start_time
+    
+    # Salvar os resultados no arquivo especificado
+    save_results_to_file(output_file, biconnected_components, has_disjoint_paths_list, execution_time)
+    print(f"Resultados salvos em: {output_file}")
 
 if __name__ == "__main__":
     main()

@@ -51,8 +51,8 @@ def create_articulation_graph(num_vertices, output_file):
         
         # Salva o resultado da remoção no arquivo de saída
         with open(output_file, 'a') as f:
-            f.write(f'Removendo ponto de articulação {articulation_point}:\n')
-            f.write(f'Grafo ainda é conexo: {is_still_connected}\n')
+            f.write(f'Removendo ponto de articulacao {articulation_point}:\n')
+            f.write(f'Grafo ainda e conexo: {is_still_connected}\n')
 
 
     # Verifica se o grafo sem os pontos de articulação ainda é conexo
@@ -63,10 +63,10 @@ def create_articulation_graph(num_vertices, output_file):
 
     # Salva o resultado final no arquivo de saída
     with open(output_file, 'a') as f:
-        f.write(f'Grafo ainda é conexo após todas as remoções: {is_still_connected}\n')
-        f.write(f'Tempo total de execução: {total_execution_time:.6f} segundos\n')
+        f.write(f'Grafo ainda e conexo apos todas as remocoes: {is_still_connected}\n')
+        f.write(f'Tempo total de execucao: {total_execution_time:.6f} segundos\n')
 
 if __name__ == "__main__":
-    num_vertices = 100000  # Número de vértices no grafo
-    output_filename = 'ex2-100000.txt'  # Nome do arquivo de saída
+    num_vertices = 100  # Número de vértices no grafo
+    output_filename = 'ex2-100.out'
     create_articulation_graph(num_vertices, output_filename)

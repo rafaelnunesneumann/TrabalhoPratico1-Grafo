@@ -19,7 +19,6 @@ def find_biconnected_components(G):
 def has_disjoint_paths(G, component):
     """ Verifica se existem caminhos disjuntos dentro do componente biconexo. """
     result = False
-    no_disjoint_paths = []
 
     nodes = list(component)
     n = len(nodes)
@@ -29,28 +28,21 @@ def has_disjoint_paths(G, component):
         for j in range(i + 1, n):
             disjoint_paths = nx.node_disjoint_paths(G, nodes[i], nodes[j])
             if disjoint_paths:
-                result = True  # Existe pelo menos um par de vértices sem caminho conectando-os
-            else:
-                no_disjoint_paths.append((nodes[i], nodes[j]))
-    
-    return result, no_disjoint_paths
+                result = True  # Existe pelo menos um par de vértices sem caminho conectando-os    
+    return result,
 
 def save_results_to_file(filename, biconnected_components, has_disjoint_paths, execution_time):
     """ Salva os resultados em um arquivo especificado pelo usuário. """
     with open(filename, 'w') as f:
-        f.write(f"Tempo total de execução: {execution_time:.6f} segundos\n\n")
+        f.write(f"Tempo total de execucao: {execution_time:.6f} segundos\n\n")
         for idx, component in enumerate(biconnected_components):
             f.write(f"Bloco Biconexo {idx + 1}: {component}\n")
             f.write(f"Possui caminhos disjuntos: {has_disjoint_paths[idx][0]}\n")
-            if has_disjoint_paths[idx][0]:  # Se há vértices sem caminhos disjuntos
-                f.write("Vértices sem caminhos disjuntos:\n")
-                for vertices in has_disjoint_paths[idx][1]:
-                    f.write(f"{vertices[0]} e {vertices[1]}\n")
             f.write("\n")
 
 def main():
-    num_vertices = 100
-    output_file = "ex1-100.out" 
+    num_vertices = 100000
+    output_file = "ex1-100000.out" 
     
     # Criar o grafo aleatório
     G = create_random_graph(num_vertices)

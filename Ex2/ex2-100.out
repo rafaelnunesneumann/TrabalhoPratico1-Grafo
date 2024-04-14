@@ -1,0 +1,25 @@
+Grafo é conexo: True
+Pontos de articulação iniciais: [8, 49, 72, 33, 63, 91, 39, 90, 23, 52]
+
+Removendo ponto de articulacao 8:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 49:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 72:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 33:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 63:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 91:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 39:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 90:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 23:
+Grafo ainda e conexo: False
+Removendo ponto de articulacao 52:
+Grafo ainda e conexo: False
+Grafo ainda e conexo apos todas as remocoes: False
+Tempo total de execucao: 0.003001 segundos

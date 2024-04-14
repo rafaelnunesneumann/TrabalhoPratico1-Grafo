@@ -15,9 +15,8 @@ def nx_to_tarjan_graph(G):
     return tarjan_graph
 
 def main():
-    # Parâmetros do grafo aleatório
-    num_vertices = 100000
-    num_edges = num_vertices * 2  # Determinando o número de arestas
+    num_vertices = 100
+    num_edges = num_vertices * 2 
 
     # Gerar um grafo aleatório com o número especificado de vértices
     G = nx.gnm_random_graph(num_vertices, num_edges, directed=False)
@@ -35,7 +34,7 @@ def main():
     execution_time = end_time - start_time
 
     # Nome do arquivo de saída
-    output_filename = "ex3-100000.out"
+    output_filename = "ex3-100.out"
 
     # Escrever os componentes biconexos no arquivo de saída
     with open(output_filename, 'w') as f:
